@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String
+  password   String
+  role_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_banned  Boolean  @default(false)
+
+  orders Order[]
+  tokens Token[]
+  carts  Cart[]
+  Role   Role    @relation(fields: [role_id], references: [id])
+
+  @@map("users")
+}
+
+model Token {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  token      String   @unique
+  expired_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("tokens")
+}
+
+model Role {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  users       User[]
+  permissions PermissionRole[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  roles PermissionRole[]
+
+  @@map("permissions")
+}
+
+model PermissionRole {
+  permission_id Int
+  role_id       Int
+  permission    Permission @relation(fields: [permission_id], references: [id])
+  role          Role       @relation(fields: [role_id], references: [id])
+
+  @@id([permission_id, role_id])
+  @@map("permission_role")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  price       Float
+  in_stock    Boolean
+  description String?  @db.Text
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  order_items OrderItem[]
+  carts       Cart[]
+
+  @@map("products")
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  is_paid    Boolean
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  order_items OrderItem[]
+  user        User        @relation(fields: [user_id], references: [id])
+
+  @@map("orders")
+}
+
+model OrderItem {
+  order_id    Int
+  product_id  Int
+  quantity    Int
+  total_price Float
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  Product Product @relation(fields: [product_id], references: [id])
+  Order   Order   @relation(fields: [order_id], references: [id])
+
+  @@id([order_id, product_id])
+  @@map("order_items")
+}
+
+model Cart {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  product_id  Int
+  quantity    Int
+  total_price Float
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  User    User    @relation(fields: [user_id], references: [id])
+  Product Product @relation(fields: [product_id], references: [id])
+
+  @@map("carts")
+}
