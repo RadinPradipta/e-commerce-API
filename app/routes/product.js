@@ -14,6 +14,11 @@ router.get("/products/:id", async (req, res) => {
   res.json(results);
 });
 
+router.post("/products", async (req, res) => {
+    const results = await Product.store(req.body)
+    res.json(results)
+})
+
 router.put("/products/:id", async (req, res) => {
     const id = Number(req.params.id)
     const results = await Product.update(id,req.body)
