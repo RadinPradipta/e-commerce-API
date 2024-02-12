@@ -22,6 +22,24 @@ class User extends Service {
       },
     });
   }
+
+  async update(id, data) {
+    try {
+      return await this.prisma[this.model].update({
+        where: { id: Number(id) },
+        data:{
+          name: data.name,
+          email: data.email.toLowerCase(),
+          password: bcrypt.hashSync(
+            `${data.password}`,
+            Number(process.env.BCRYPT_ROUND)
+          ),
+        }
+      });
+    } catch (err) {
+      throw new Error("Id not found");
+    }
+  }
 }
 
 export default new User();
