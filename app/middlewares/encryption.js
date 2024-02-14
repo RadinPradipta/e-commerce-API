@@ -1,4 +1,4 @@
-import { encrypt } from "../../helpers/encryption.js";
+import { encrypt } from "../helpers/encryption.js";
 import dotenv from "dotenv";
 
 dotenv.config();

@@ -2,7 +2,7 @@ import { Router } from "express";
 import authenticateToken from "../middlewares/authentication.js";
 import Order from "../services/order.js";
 import encryption from "../middlewares/encryption.js";
-import { decrypt } from "../../helpers/encryption.js";
+import { decrypt } from "../helpers/encryption.js";
 import dotenv from "dotenv";
 
 dotenv.config();

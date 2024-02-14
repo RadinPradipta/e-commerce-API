@@ -2,7 +2,7 @@ import { Router } from "express";
 import Cart from "../services/cart.js";
 import authenticateToken from "../middlewares/authentication.js";
 import authorize from "../middlewares/authorization.js";
-import { Permission } from "../../helpers/authorization_const.js";
+import { Permission } from "../helpers/authorization_const.js";
 
 const router = Router();
 

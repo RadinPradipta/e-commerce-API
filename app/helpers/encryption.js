@@ -13,7 +13,6 @@ const encrypt = (data, hex) => {
   const dataString = JSON.stringify(data);
 
   const encryptedBody = Buffer.concat([
-    iv,
     cipher.update(dataString),
     cipher.final(),
   ]);
@@ -32,7 +31,7 @@ const decrypt = (encryptedData, hex) => {
     decipher.final(),
   ]);
 
-  const decryptedString = decryptedData.toString("utf8").slice(16);
+  const decryptedString = decryptedData.toString("utf8");
 
   const decryptedObject = JSON.parse(decryptedString);
 

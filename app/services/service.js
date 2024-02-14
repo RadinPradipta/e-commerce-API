@@ -1,4 +1,4 @@
-import prisma from "../../helpers/prisma.js";
+import prisma from "../helpers/prisma.js";
 
 class Service {
   prisma;

@@ -1,4 +1,4 @@
-import prisma from "../../helpers/prisma.js";
+import prisma from "../helpers/prisma.js";
 const authorize = (permission) => {
   return async (req, res, next) => {
     if (!req.user) {

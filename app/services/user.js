@@ -1,6 +1,6 @@
 import Service from "./service.js";
 import { Prisma } from "@prisma/client";
-import prisma from "../../helpers/prisma.js";
+import prisma from "../helpers/prisma.js";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import Jwt from "jsonwebtoken";
