@@ -1,13 +1,19 @@
 import { Router } from "express";
 import User from "../services/user.js";
 import authenticateToken from "../middlewares/authentication.js";
+import { Permission } from "../../helpers/authorization_const.js";
+import authorize from "../middlewares/authorization.js";
 
 const router = Router();
 
-router.get("/user", authenticateToken, async (req, res) => {
-  const results = await User.get();
-  res.json({ user: req.user, results: results });
-});
+router.get(
+  "/user",
+  [authenticateToken, authorize(Permission.BROWSE_USERS)],
+  async (req, res) => {
+    const results = await User.get();
+    res.json({ results: results });
+  }
+);
 
 router.post("/user", async (req, res) => {
   const results = await User.store(req.body);
@@ -24,7 +30,7 @@ router.get("/user/:id", async (req, res) => {
   res.json(results);
 });
 
-router.put("/user/:id", async (req, res) => {
+router.put("/user/:id", [authenticateToken, authorize(Permission.EDIT_USER)], async (req, res) => {
   const id = Number(req.params.id);
   const results = await User.update(id, req.body);
   res.json(results);

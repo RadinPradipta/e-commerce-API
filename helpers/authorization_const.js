@@ -32,29 +32,15 @@ const Permission = {
 const PermissionAssignment = {
   [Role.SELLER]: [
     Permission.BROWSE_PRODUCTS,
-    Permission.BROWSE_USERS,
     Permission.BROWSE_ORDERS,
-    Permission.BROWSE_CARTS,
 
     Permission.READ_PRODUCT,
-    Permission.READ_USER,
-    Permission.READ_ORDER,
-    Permission.READ_CART,
 
     Permission.EDIT_PRODUCT,
-    Permission.EDIT_USER,
-    Permission.EDIT_ORDER,
-    Permission.EDIT_CART,
 
     Permission.ADD_PRODUCT,
-    Permission.ADD_USER,
-    Permission.ADD_ORDER,
-    Permission.ADD_CART,
 
     Permission.DELETE_PRODUCT,
-    Permission.DELETE_USER,
-    Permission.DELETE_ORDER,
-    Permission.DELETE_CART,
   ],
   [Role.REGULAR_USER]: [
     Permission.BROWSE_PRODUCTS,

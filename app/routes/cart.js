@@ -1,19 +1,18 @@
 import { Router } from "express";
 import Cart from "../services/cart.js";
 import authenticateToken from "../middlewares/authentication.js";
+import authorize from "../middlewares/authorization.js";
+import { Permission } from "../../helpers/authorization_const.js";
 
 const router = Router();
 
 router.use(authenticateToken);
 
-router.get("/cart", async (req, res) => {
+router.get("/cart", authorize(Permission.READ_CART), async (req, res) => {
   console.log(req.user);
-  if (req.user.role_id === 2) {
-    const results = await Cart.findByUser(req.user.id);
-    res.json(results);
-    return;
-  }
-  res.json({ error: "Not allowed" });
+  const results = await Cart.findByUser(req.user.id);
+  res.json(results);
+  return;
 });
 
 router.post("/cart", async (req, res) => {
