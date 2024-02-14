@@ -14,6 +14,11 @@ router.post("/user", async (req, res) => {
   res.json(results);
 });
 
+router.post("/user/login", async (req, res) => {
+  const results = await User.login(req.body);
+  res.json(results);
+});
+
 router.get("/user/:id", async (req, res) => {
   const results = await User.find(Number(req.params.id));
   res.json(results);

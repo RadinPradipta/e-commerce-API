@@ -9,6 +9,7 @@ dotenv.config();
 class User extends Service {
   model = Prisma.ModelName.User;
 
+  // Create new user
   async store(data) {
     const roles = await prisma.role.findMany();
     return await prisma[this.model].create({
@@ -24,6 +25,7 @@ class User extends Service {
     });
   }
 
+  // Update user
   async update(id, data) {
     try {
       return await prisma[this.model].update({
@@ -42,6 +44,7 @@ class User extends Service {
     }
   }
 
+  // Login
   async login(data) {
     const user = await prisma[this.model].findUnique({
       where: { email: data.email.toLowerCase() },
@@ -53,7 +56,7 @@ class User extends Service {
       throw new Error("Password not match");
     }
 
-    const accessToken = Jwt.sign(user, process.env.JWT_SECRET );
+    const accessToken = Jwt.sign(user, process.env.JWT_SECRET);
 
     return accessToken;
   }

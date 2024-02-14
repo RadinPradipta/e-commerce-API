@@ -93,7 +93,9 @@ model Product {
 model Order {
   id         Int      @id @default(autoincrement())
   user_id    Int
-  is_paid    Boolean
+  code       String   @db.VarChar(255)
+  is_paid    Boolean  @default(false)
+  total      Float
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -107,6 +109,7 @@ model OrderItem {
   order_id    Int
   product_id  Int
   quantity    Int
+  price       Float
   total_price Float
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt

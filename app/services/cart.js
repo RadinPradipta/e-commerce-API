@@ -1,26 +1,51 @@
 import Service from "./service.js";
 import { Prisma } from "@prisma/client";
-import prisma from "../../helpers/prisma.js";
 import Product from "./product.js";
 
 class Cart extends Service {
   model = Prisma.ModelName.Cart;
 
   // Get cart by user id
-  async getBy(id) {
-    return await this.prisma[this.model].findMany({
+  async findByUser(id) {
+    const carts = await this.prisma[this.model].findMany({
       where: {
         user_id: id,
       },
+      include: {
+        Product: true,
+      },
     });
+    const total = carts.reduce((acc, cart) => acc + cart.total_price, 0);
+
+    const total_items = carts.reduce((acc, cart) => acc + cart.quantity, 0);
+
+    return { carts, total: total, total_items: total_items };
   }
+
+  // Get cart by user id and product id
+  async findByProduct(id, product_ids) {
+    const rows = await this.prisma[this.model].findMany({
+      where: {
+        user_id: id,
+        product_id: {
+          in: product_ids,
+        },
+      },
+      include: {
+        Product: true,
+      },
+    });
+    return rows;
+  }
+
+  // Add product to cart
   async store(product_id, user_id, quantity) {
     const product = await Product.find(product_id);
 
     if (!product) throw new Error("Product not found");
 
     // Find if product exist in the cart
-    const existInCart = await prisma[this.model].findFirst({
+    const existInCart = await this.prisma[this.model].findFirst({
       where: {
         product_id,
         user_id,
@@ -28,7 +53,7 @@ class Cart extends Service {
     });
     // Update quantity if product exist
     if (existInCart) {
-      return this.prisma[this.model].update({
+      return await this.prisma[this.model].update({
         where: {
           id: existInCart.id,
         },
@@ -38,7 +63,7 @@ class Cart extends Service {
         },
       });
     } else {
-      return this.prisma[this.model].create({
+      return await this.prisma[this.model].create({
         data: {
           product_id,
           user_id,
@@ -49,10 +74,12 @@ class Cart extends Service {
     }
   }
 
-  async delete(product_id,user_id) {
+  async delete(product_ids, user_id) {
     return await this.prisma[this.model].delete({
       where: {
-        product_id,
+        product_id: {
+          in: product_ids,
+        },
         user_id,
       },
     });
