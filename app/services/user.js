@@ -56,7 +56,9 @@ class User extends Service {
       throw new Error("Password not match");
     }
 
-    const accessToken = Jwt.sign(user, process.env.JWT_SECRET);
+    const accessToken = Jwt.sign(user, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
 
     return accessToken;
   }

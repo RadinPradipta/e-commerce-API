@@ -43,8 +43,7 @@ const PermissionAssignment = {
     Permission.DELETE_PRODUCT,
   ],
   [Role.REGULAR_USER]: [
-    Permission.BROWSE_PRODUCTS,
-    Permission.BROWSE_ORDERS,
+    Permission.BROWSE_PRODUCTS,    
     Permission.BROWSE_CARTS,
 
     Permission.READ_PRODUCT,
@@ -55,6 +54,7 @@ const PermissionAssignment = {
 
     Permission.ADD_CART,
     Permission.ADD_ORDER,
+    Permission.EDIT_ORDER,
 
     Permission.DELETE_CART,
   ],

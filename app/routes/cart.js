@@ -15,7 +15,7 @@ router.get("/cart", authorize(Permission.READ_CART), async (req, res) => {
   return;
 });
 
-router.post("/cart", async (req, res) => {
+router.post("/cart", authorize(Permission.ADD_CART), async (req, res) => {
   const results = await Cart.store(
     req.body.product_id,
     req.user.id,
@@ -24,7 +24,7 @@ router.post("/cart", async (req, res) => {
   res.json(results);
 });
 
-router.delete("/cart", async (req, res) => {
+router.delete("/cart", authorize(Permission.DELETE_CART), async (req, res) => {
   const user_id = req.user.id;
   const product_id = req.body.product_id;
   const results = await Cart.delete(product_id, user_id);

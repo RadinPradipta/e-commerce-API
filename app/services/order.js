@@ -101,6 +101,23 @@ class Order extends Service {
           expiryYear: data.expiryYear,
         });
 
+        // const dataPayment = {
+        //   amount: order.total,
+        //   cardNumber: data.cardNumber,
+        //   cvv: data.cvv,
+        //   expiryMonth: data.expiryMonth,
+        //   expiryYear: data.expiryYear,
+        // };
+        // const response = await fetch("http://localhost:3000/pay", {
+        //   method: "POST",
+        //   body: JSON.stringify(dataPayment),
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // });
+
+        // console.log(response);
+
         // Check response status
         if (response.status === 200) {
           // Update order status
