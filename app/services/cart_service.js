@@ -1,6 +1,6 @@
-import Service from "./service.js";
+import Service from "./base_service.js";
 import { Prisma } from "@prisma/client";
-import Product from "./product.js";
+import Product from "./product_service.js";
 
 class Cart extends Service {
   model = Prisma.ModelName.Cart;

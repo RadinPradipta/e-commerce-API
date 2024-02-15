@@ -51,6 +51,7 @@ const PermissionAssignment = {
     Permission.READ_CART,
 
     Permission.EDIT_CART,
+    Permission.EDIT_USER,
 
     Permission.ADD_CART,
     Permission.ADD_ORDER,

@@ -4,9 +4,16 @@ export default function authenticateToken(req, res, next) {
   const token = authHeader && authHeader.split(" ")[1];
   if (token == null) return res.sendStatus(401);
 
-  Jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403).json({ error: "Forbidden" });
+  try {
+    const user = Jwt.verify(token, process.env.JWT_SECRET);
     req.user = user;
-    next();
-  });
+
+    if (!req.params.id || Number(req.params.id) === user.id) {
+      next();
+    } else {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 }

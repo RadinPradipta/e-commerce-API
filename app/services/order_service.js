@@ -1,6 +1,6 @@
-import Service from "./service.js";
+import Service from "./base_service.js";
 import { Prisma } from "@prisma/client";
-import cart from "./cart.js";
+import cart from "./cart_service.js";
 import axios from "axios";
 
 class Order extends Service {
@@ -75,7 +75,6 @@ class Order extends Service {
       return {
         success: true,
         order,
-        status: 200,
       };
     });
   }
@@ -123,7 +122,7 @@ class Order extends Service {
           // Update order status
           await tx.order.update({
             where: { id: order_id },
-            data: { is_paid: true },
+            data: { payment_status: "PAID" },
           });
 
           // Get new updated order

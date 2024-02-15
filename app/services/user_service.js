@@ -1,4 +1,4 @@
-import Service from "./service.js";
+import Service from "./base_service.js";
 import { Prisma } from "@prisma/client";
 import prisma from "../helpers/prisma.js";
 import dotenv from "dotenv";
@@ -11,7 +11,6 @@ class User extends Service {
 
   // Create new user
   async store(data) {
-    const roles = await prisma.role.findMany();
     return await prisma[this.model].create({
       data: {
         name: data.name,
@@ -20,7 +19,7 @@ class User extends Service {
           `${data.password}`,
           Number(process.env.BCRYPT_ROUND)
         ),
-        role_id: roles[Math.floor(Math.random() * roles.length)].id,
+        role_id: 2,
       },
     });
   }

@@ -1,10 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../app/helpers/prisma.js";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 dotenv.config();
 
-const prisma = new PrismaClient();
 // await prisma.user.deleteMany();
 
 const roles = await prisma.role.findMany();

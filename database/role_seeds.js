@@ -7,16 +7,16 @@ import {
 
 const main = async () => {
   await prisma.permissionRole.deleteMany();
-  // await prisma.role.deleteMany();
+  await prisma.role.deleteMany();
   await prisma.permission.deleteMany();
 
-  // for (const role in Role) {
-  //   await prisma.role.create({
-  //     data: {
-  //       name: Role[role],
-  //     },
-  //   });
-  // }
+  for (const role in Role) {
+    await prisma.role.create({
+      data: {
+        name: Role[role],
+      },
+    });
+  }
 
   for (const permission in Permission) {
     await prisma.permission.create({
