@@ -17,6 +17,7 @@ class Order extends Service {
   async checkout(product_ids, user_id) {
     const userCart = await cart.findByUser(user_id);
 
+    // Check if cart is empty
     if (userCart.length === 0) {
       return {
         error: "Cart is empty",
@@ -34,7 +35,7 @@ class Order extends Service {
       };
     }
 
-    // Continue the program even if some products do not exist in cart
+    // Continue the program even if some products in the array do not exist in cart
     const boughtProducts = await cart.findByProduct(user_id, product_ids);
 
     const total = boughtProducts.reduce(
@@ -42,6 +43,7 @@ class Order extends Service {
       0
     );
 
+    // Start transaction
     return await this.prisma.$transaction(async (transaction) => {
       const order = await transaction.order.create({
         data: {
@@ -86,8 +88,18 @@ class Order extends Service {
         where: { id: order_id },
       });
 
+      // Check if order exists
       if (!order) {
-        throw new Error("Order not found");
+        const error = new Error("Order not found");
+        error.status = 404;
+        throw error;
+      }
+
+      // Check if order is already paid
+      if (order.payment_status === "PAID") {
+        const error = new Error("Order already paid");
+        error.status = 400;
+        throw error;
       }
 
       // Attempting payment
@@ -99,23 +111,6 @@ class Order extends Service {
           expiryMonth: data.expiryMonth,
           expiryYear: data.expiryYear,
         });
-
-        // const dataPayment = {
-        //   amount: order.total,
-        //   cardNumber: data.cardNumber,
-        //   cvv: data.cvv,
-        //   expiryMonth: data.expiryMonth,
-        //   expiryYear: data.expiryYear,
-        // };
-        // const response = await fetch("http://localhost:3000/pay", {
-        //   method: "POST",
-        //   body: JSON.stringify(dataPayment),
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // });
-
-        // console.log(response);
 
         // Check response status
         if (response.status === 200) {
@@ -137,7 +132,11 @@ class Order extends Service {
             order: newOrder,
           };
         } else {
-          throw new Error("Payment failed");
+          return {
+            success: false,
+            message: "Payment failed",
+            response,
+          };
         }
       } catch (error) {
         throw new Error({ error: error.message });

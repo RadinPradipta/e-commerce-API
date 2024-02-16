@@ -3,14 +3,14 @@ import { faker } from "@faker-js/faker";
 
 async function main() {
   // await prisma.product.deleteMany();
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 10; i++) {
     await prisma.category.create({
       data: {
         name: faker.commerce.department(),
       },
     });
   }
-  for (let i = 0; i < 400; i++) {
+  for (let i = 0; i < 500; i++) {
     await prisma.product.create({
       data: {
         name: faker.commerce.productName(),

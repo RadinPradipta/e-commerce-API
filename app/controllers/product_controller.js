@@ -1,4 +1,6 @@
 import Product from "../services/product_service.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const productController = {
   browseProducts: async (req, res) => {

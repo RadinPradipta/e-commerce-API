@@ -42,7 +42,11 @@ class Cart extends Service {
   async store(product_id, user_id, quantity) {
     const product = await Product.find(product_id);
 
-    if (!product) throw new Error("Product not found");
+    if (!product) {
+      const err = new Error("Product not found");
+      err.status = 404;
+      throw err
+    }
 
     // Find if product exist in the cart
     const existInCart = await this.prisma[this.model].findFirst({

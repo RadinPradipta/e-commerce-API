@@ -6,6 +6,7 @@ import cartController from "../controllers/cart_controller.js";
 
 const router = Router();
 
+// get cart by user
 router.get(
   "/cart",
   authenticateToken,
@@ -13,6 +14,7 @@ router.get(
   cartController.readCart
 );
 
+// add products to cart
 router.post(
   "/cart",
   authenticateToken,
@@ -20,6 +22,7 @@ router.post(
   cartController.addToCart
 );
 
+// delete cart by user
 router.delete(
   "/cart",
   authorize(Permission.DELETE_CART),

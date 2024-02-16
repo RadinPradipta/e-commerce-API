@@ -4,7 +4,11 @@ import { Prisma } from "@prisma/client";
 class Product extends Service {
   model = Prisma.ModelName.Product;
 
-  async searchProducts(query, page = 1, perPage = 10) {
+  // Search functionality
+  async searchProducts(query) {
+    // console.log(url);
+    const page = Number(query.page) || 1;
+    const perPage = 10;
     if (Object.keys(query).length === 0) {
       return { error: "Query(s) required", status: 400 };
     }
@@ -31,20 +35,14 @@ class Product extends Service {
       },
       skip: offset,
       take: perPage,
+      orderBy: { name: "asc" },
     });
-
-    let nextPage = null;
-    if (page < totalPages) {
-      nextPage = `/products/search?page=${page + 1}&perPage=${perPage}`;
-    }
 
     const response = {
       results,
-      pagination: {
+      pages: {
         totalPages,
         currentPage: page,
-        perPage,
-        nextPage,
       },
       status: 200,
     };

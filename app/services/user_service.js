@@ -11,23 +11,32 @@ class User extends Service {
 
   // Create new user
   async store(data) {
-    return await prisma[this.model].create({
-      data: {
-        name: data.name,
-        email: data.email.toLowerCase(),
-        password: bcrypt.hashSync(
-          `${data.password}`,
-          Number(process.env.BCRYPT_ROUND)
-        ),
-        role_id: 2,
-      },
-    });
+    try {
+      return {
+        result: await prisma[this.model].create({
+          data: {
+            name: data.name,
+            email: data.email.toLowerCase(),
+            password: bcrypt.hashSync(
+              `${data.password}`,
+              Number(process.env.BCRYPT_ROUND)
+            ),
+            role_id: 2,
+          },
+        }),
+        status: 201,
+      };
+    } catch (err) {
+      const error = new Error("Internal Server Error");
+      error.status = 500;
+      throw error;
+    }
   }
 
   // Update user
   async update(id, data) {
     try {
-      return await prisma[this.model].update({
+      const result = await prisma[this.model].update({
         where: { id: Number(id) },
         data: {
           name: data.name,
@@ -38,8 +47,13 @@ class User extends Service {
           ),
         },
       });
+      return result.length > 0
+        ? { message: "Updated successfully", result, status: 200 }
+        : { message: "Id not found" };
     } catch (err) {
-      throw new Error("Id not found");
+      const error = new "Internal Server Error"();
+      error.status = 500;
+      throw error;
     }
   }
 
@@ -49,12 +63,17 @@ class User extends Service {
       where: { email: data.email.toLowerCase() },
     });
     if (!user) {
-      throw new Error("Email not found");
+      const error = new Error("Email not found");
+      error.status = 404;
+      throw error;
     }
     if (!bcrypt.compareSync(data.password, user.password)) {
-      throw new Error("Password not match");
+      const error = new Error("Password not match");
+      error.status = 401;
+      throw error;
     }
 
+    // Generate token for that specific user
     const accessToken = Jwt.sign(user, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
