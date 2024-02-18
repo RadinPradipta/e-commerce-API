@@ -126,7 +126,7 @@ npm run start
 - **Description**: Initiates the checkout process to create a new order.
 - **Request Body**:
   - `product_ids`: array of product_ids
-  ```
+  ```json
   {
    "product_ids":[7]
   }
@@ -158,7 +158,7 @@ npm run start
 - **Request Body**:
   - `product_id`: ID of the product to be added.
   - `quantity`: Quantity of the product to be added.
-  ```
+  ```json
   {
   "product_id":7,
   "quantity":5
@@ -175,7 +175,7 @@ npm run start
 - **Description**: Deletes cart items associated with the authenticated user.
 - **Request Body**:
   - `product_id`: ID of the product to be deleted.
-  ```
+  ```json
   {
   "product_id":7
   }
@@ -198,7 +198,7 @@ npm run start
   - `expiryMonth`: User's credit card's expiration month.
   - `expiryYear`: User's credit card's expiration year.
 
-  ```
+  ```json
   {
   "order_id":1,
   "cardNumber": "4012888888881881",
@@ -259,7 +259,7 @@ npm run start
   - `in_stock`: is the product in stock
   - `description`:description of the product
   - `category_id`:category of the product
-  ```
+  ```json
   {
   "name":"product",
   "price":100,
@@ -285,7 +285,7 @@ npm run start
   - `in_stock`: is the product in stock
   - `description`:description of the product
   - `category_id`:category of the product
-  ```
+  ```json
   {
   "name":"product",
   "price":100,
@@ -330,7 +330,7 @@ npm run start
   - `name`: Name of the user.
   - `email`: Email address of the user.
   - `password`: Password of the user.
-  ```
+  ```json
   {
   "name":"user",
   "email":"user",
@@ -364,7 +364,7 @@ npm run start
   - `name`: Name of the user.
   - `email`: Email address of the user.
   - `password`: Password of the user.
-  ```
+  ```json
   {
   "name":"user",
   "email":"user",
