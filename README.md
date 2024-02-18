@@ -2,8 +2,6 @@
 
  ## Routes Documentation
 
-Below are the routes available for managing orders within the system, along with their functionalities and usage.
-
 # Authentication Route
 
 ### 1. User Login
