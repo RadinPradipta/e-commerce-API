@@ -11,12 +11,16 @@ const cartController = {
     } catch (error) {}
   },
   addToCart: async (req, res) => {
-    const results = await Cart.store(
-      req.body.product_id,
-      req.user.id,
-      req.body.quantity
-    );
-    res.json(results);
+    try {
+      const results = await Cart.store(
+        req.body.product_id,
+        req.user.id,
+        req.body.quantity
+      );
+      res.json(results);
+    } catch (error) {
+      res.status(error.status).json({ error: error.message });
+    }
   },
   deleteCart: async (req, res) => {
     const user_id = req.user.id;

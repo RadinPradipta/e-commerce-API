@@ -49,7 +49,7 @@ class Cart extends Service {
     }
 
     // Check if product is in stock
-    if (product.in_stock === 0) {
+    if (product.in_stock === false) {
       const err = new Error("Product out of stock");
       err.status = 400;
       throw err;
