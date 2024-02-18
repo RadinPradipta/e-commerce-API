@@ -5,6 +5,9 @@ const cartController = {
     try {
       console.log(req.user);
       const results = await Cart.findByUser(req.user.id);
+      if(results.carts.length == 0){
+        res.status(400).json({message: "Cart is empty"})
+      }
       res.json(results);
 
       return;

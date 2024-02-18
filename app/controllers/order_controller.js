@@ -4,7 +4,7 @@ const orderController = {
   browseOrders: async (req, res) => {
     try {
       const results = await Order.get();
-      res.json(results);
+      res.json({ data: results });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -13,7 +13,7 @@ const orderController = {
     try {
       const user_id = req.user.id;
       const results = await Order.findByUser(user_id);
-      res.json(results);
+      res.json({ data: results });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
