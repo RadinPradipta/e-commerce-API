@@ -6,9 +6,7 @@ const authController = {
       const results = await User.login(req.body);
       res.json(results);
     } catch (error) {
-      res
-        .status(error.status)
-        .json({ error: "Internal Server Error", message: error.message });
+      res.status(error.status).json({ message: error.message });
     }
   },
 };

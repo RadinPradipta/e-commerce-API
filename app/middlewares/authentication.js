@@ -10,8 +10,9 @@ export default function authenticateToken(req, res, next) {
 
     if (!req.params.id || Number(req.params.id) === user.id) {
       next();
-    } else {
-      return res.status(401).json({ error: "Unauthorized" });
+    }
+    if (user.is_banned === true) {
+      return res.status(401).json({ error: "You are banned" });
     }
   } catch (err) {
     return res.status(500).json({ error: "Internal Server Error" });

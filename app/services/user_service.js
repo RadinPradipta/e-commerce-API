@@ -68,7 +68,12 @@ class User extends Service {
       throw error;
     }
     if (!bcrypt.compareSync(data.password, user.password)) {
-      const error = new Error("Password not match");
+      const error = new Error("Wrong password");
+      error.status = 401;
+      throw error;
+    }
+    if (user.is_banned === true) {
+      const error = new Error("You are banned");
       error.status = 401;
       throw error;
     }
@@ -78,7 +83,7 @@ class User extends Service {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    return accessToken;
+    return { message: `Welcome ${user.name}`, accessToken };
   }
 }
 
