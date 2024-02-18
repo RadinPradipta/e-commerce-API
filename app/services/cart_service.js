@@ -45,7 +45,14 @@ class Cart extends Service {
     if (!product) {
       const err = new Error("Product not found");
       err.status = 404;
-      throw err
+      throw err;
+    }
+
+    // Check if product is in stock
+    if (product.in_stock === 0) {
+      const err = new Error("Product out of stock");
+      err.status = 400;
+      throw err;
     }
 
     // Find if product exist in the cart
